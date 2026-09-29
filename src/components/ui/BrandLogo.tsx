@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { cn } from '@/lib/cn'
 
 interface BrandLogoProps {
@@ -5,9 +6,28 @@ interface BrandLogoProps {
 }
 
 /**
- * Logotipo tipográfico "LPF STATS — Administrador Oficial LPF".
+ * Logotipo "LPF STATS — Administrador Oficial LPF". Se renderiza con
+ * `mix-blend-screen` para que el fondo oscuro del recorte desaparezca sobre la
+ * tarjeta. Incluye un fallback tipográfico si la imagen no está disponible.
  */
 export function BrandLogo({ className }: BrandLogoProps) {
+  const [failed, setFailed] = useState(false)
+
+  if (!failed) {
+    return (
+      <img
+        src="/images/gamegate-logo.png"
+        alt="LPF STATS — Administrador Oficial LPF"
+        width={362}
+        height={193}
+        decoding="async"
+        draggable={false}
+        onError={() => setFailed(true)}
+        className={cn('mx-auto w-[362px] select-none mix-blend-screen', className)}
+      />
+    )
+  }
+
   return (
     <div
       className={cn('flex flex-col items-center gap-2.5', className)}
