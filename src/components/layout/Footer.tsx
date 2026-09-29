@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="relative z-20 shrink-0 border-t border-line/70 bg-ink-950/95 px-4 py-2.5 backdrop-blur-md lg:px-6">
       <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
         <div className="flex items-center gap-2.5">
-          <span className="font-display text-sm text-content-primary">GameGate</span>
+          <span className="font-display text-sm text-content-primary">LPF STATS</span>
           <span className="text-content-faint">|</span>
           <span className="text-xs text-content-faint">Boletería Oficial LPF</span>
         </div>

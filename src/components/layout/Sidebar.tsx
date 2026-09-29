@@ -118,12 +118,15 @@ export function Sidebar({ onNavigate }: SidebarProps) {
       />
 
       <div className="relative z-10 px-6 pb-4 pt-6">
-        <img
-          src="/images/gamegate-logo.png"
-          alt="GameGate · Administrador Oficial LPF"
-          width={184}
-          className="mix-blend-screen"
-        />
+        <p className="font-display text-[24px] leading-none text-white">
+          LPF{' '}
+          <span className="bg-gradient-to-r from-brand-300 to-brand-500 bg-clip-text text-transparent">
+            STATS
+          </span>
+        </p>
+        <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+          Administrador Oficial LPF
+        </p>
       </div>
 
       <nav className="scrollbar-slim relative z-10 mt-1 flex-1 overflow-y-auto pb-4">

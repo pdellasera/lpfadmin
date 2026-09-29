@@ -1,4 +1,4 @@
-# GameGate · LPF Admin
+# LPF STATS
 
 Panel de administración de la Liga Panameña de Fútbol (LPF), construido con React + Vite + Tailwind CSS v4.
 
@@ -62,7 +62,7 @@ Pasos:
 3. Framework Preset **Vite** (se autodetecta). Root Directory `./`.
 4. Agrega las variables de entorno en **Settings → Environment Variables** (Production + Preview):
    - `VITE_USE_MOCK_DATA=true`
-   - `VITE_API_URL=https://api.admingate-lpf.example.com`
+   - `VITE_API_URL=https://api.lpf-stats.example.com`
 5. **Deploy**. Cada push a `main` despliega a producción automáticamente; cada PR genera una Preview URL.
 
 > ⚠️ El deploy es público y actualmente sirve solo datos mock (sin backend ni autenticación real).

@@ -9,8 +9,8 @@ import { MicrosoftLogo, SocialButton } from './SocialButton'
 
 export function LoginCard() {
   const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('lpf@lpf.com')
+  const [password, setPassword] = useState('lpf2026')
   const [remember, setRemember] = useState(true)
   const [submitting, setSubmitting] = useState(false)
 
@@ -90,6 +90,11 @@ export function LoginCard() {
           )}
         </button>
       </form>
+
+      <p className="mt-5 text-center text-[13px] text-[#8ea1ba]">
+        Cuenta demo: <span className="font-semibold text-[#00c8f5]">lpf@lpf.com</span> ·{' '}
+        <span className="font-semibold text-[#00c8f5]">lpf2026</span>
+      </p>
 
       <div className="mt-[22px] flex items-center gap-3">
         <span className="h-px flex-1 bg-line/70" />
