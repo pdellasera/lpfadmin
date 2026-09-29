@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#061426" />
+    <meta name="color-scheme" content="dark light" />
+    <script>
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('lpf-theme')
+          var dark = true
+          if (stored === 'light') {
+            dark = false
+          } else if (stored === 'system') {
+            dark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          }
+          document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+        } catch (e) {
+          document.documentElement.dataset.theme = 'dark'
+        }
+      })()
+    </script>
+    <meta
+      name="description"
+      content="GameGate · Panel de administración de la Liga Panameña de Fútbol"
+    />
+    <title>GameGate · LPF</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
