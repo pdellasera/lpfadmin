@@ -1,11 +1,9 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaArrowRight, FaCheck, FaEnvelope, FaLock, FaSpinner } from 'react-icons/fa6'
-import { FcGoogle } from 'react-icons/fc'
 import { delay } from '@/api/client'
 import { BrandLogo } from '@/components/ui/BrandLogo'
 import { AuthField } from './AuthField'
-import { MicrosoftLogo, SocialButton } from './SocialButton'
 
 export function LoginCard() {
   const navigate = useNavigate()
@@ -95,20 +93,6 @@ export function LoginCard() {
         Cuenta demo: <span className="font-semibold text-[#00c8f5]">lpf@lpf.com</span> ·{' '}
         <span className="font-semibold text-[#00c8f5]">lpf2026</span>
       </p>
-
-      <div className="mt-[22px] flex items-center gap-3">
-        <span className="h-px flex-1 bg-line/70" />
-        <span className="text-[13px] text-[#6b7790]">o ingresa con</span>
-        <span className="h-px flex-1 bg-line/70" />
-      </div>
-
-      <div className="mt-[22px] grid grid-cols-2 gap-[20px]">
-        <SocialButton icon={<FcGoogle className="text-[20px]" />} label="Google" />
-        <SocialButton
-          icon={<MicrosoftLogo className="h-[20px] w-[20px]" />}
-          label="Microsoft"
-        />
-      </div>
 
       <p className="mt-[31px] text-center text-[14px] text-[#8ea1ba]">
         ¿No tienes una cuenta?{' '}
