@@ -1,4 +1,4 @@
-import type { Player, PlayerFilterOptions, PlayerPosition, PlayerStatus } from '@/types'
+import type { Player, PlayerCategory, PlayerFilterOptions, PlayerPosition, PlayerStatus } from '@/types'
 import { clubById, clubs } from './clubs'
 
 // Only 3 player photos exist in the project, so every player reuses them
@@ -60,18 +60,18 @@ interface ReferenceRow {
 }
 
 // The 10 players shown on the first page of the reference screenshot.
-// Columns: EDAD · PJ · GOLES · ASIST · TA · TR (in that order).
+// Columns: AÑO NACIMIENTO · CATEGORÍA · PJ · GOLES · ASIST · TA · TR (in that order).
 const REFERENCE_ROWS: ReferenceRow[] = [
-  { name: 'Gabriel Torres', clubId: 'cai', position: 'DEL', age: 29, played: 18, goals: 12, assists: 5, yellow: 3, red: 0 },
+  { name: 'Gabriel Torres', clubId: 'arabe', position: 'DEL', age: 29, played: 18, goals: 12, assists: 5, yellow: 3, red: 0 },
   { name: 'José Martínez', clubId: 'tauro', position: 'POR', age: 31, played: 16, goals: 0, assists: 0, yellow: 1, red: 0 },
-  { name: 'Luis Rodríguez', clubId: 'plaza', position: 'DEF', age: 27, played: 15, goals: 1, assists: 3, yellow: 4, red: 1 },
+  { name: 'Luis Rodríguez', clubId: 'universitario', position: 'DEF', age: 27, played: 15, goals: 1, assists: 3, yellow: 4, red: 1 },
   { name: 'Ernesto Sinclair', clubId: 'sporting', position: 'MED', age: 25, played: 17, goals: 6, assists: 4, yellow: 2, red: 0 },
   { name: 'Carlos Pérez', clubId: 'herrera', position: 'DEF', age: 24, played: 14, goals: 0, assists: 1, yellow: 3, red: 0 },
   { name: 'Jair Catuy', clubId: 'veraguas', position: 'DEL', age: 28, played: 16, goals: 7, assists: 2, yellow: 1, red: 0 },
   { name: 'Kevin Galván', clubId: 'sanfrancisco', position: 'MED', age: 23, played: 15, goals: 2, assists: 3, yellow: 2, red: 1 },
-  { name: 'Ricardo Phillips Jr.', clubId: 'alianza', position: 'DEL', age: 21, played: 13, goals: 4, assists: 2, yellow: 0, red: 0 },
+  { name: 'Ricardo Phillips Jr.', clubId: 'sporting', position: 'DEL', age: 21, played: 13, goals: 4, assists: 2, yellow: 0, red: 0 },
   { name: 'Manuel Gamboa', clubId: 'universitario', position: 'DEF', age: 26, played: 14, goals: 1, assists: 0, yellow: 5, red: 1 },
-  { name: 'Andrés Vega', clubId: 'potros', position: 'MED', age: 21, played: 15, goals: 3, assists: 5, yellow: 2, red: 0 },
+  { name: 'Andrés Vega', clubId: 'veraguas', position: 'MED', age: 21, played: 15, goals: 3, assists: 5, yellow: 2, red: 0 },
 ]
 
 // Distribution taken from the screenshot counters: 48 POR / 138 DEF / 162 MED / 134 DEL (482 players).
@@ -82,6 +82,15 @@ const DISTRIBUTION: Record<PlayerPosition, number> = {
   DEL: 134,
 }
 
+const SEASON_YEAR = 2026
+
+function categoryForAge(age: number): PlayerCategory {
+  if (age < 17) return 'sub-17'
+  if (age < 20) return 'sub-20'
+  if (age < 23) return 'sub-23'
+  return 'mayor'
+}
+
 function buildReferencePlayers(): Player[] {
   return REFERENCE_ROWS.map(
     (row, index): Player => ({
@@ -89,7 +98,8 @@ function buildReferencePlayers(): Player[] {
       name: row.name,
       club: clubById(row.clubId),
       position: row.position,
-      age: row.age,
+      birthYear: SEASON_YEAR - row.age,
+      category: categoryForAge(row.age),
       played: row.played,
       goals: row.goals,
       assists: row.assists,
@@ -148,12 +158,14 @@ function buildGeneratedPlayers(): Player[] {
   for (let i = 0; i < positions.length; i += 1) {
     const position = positions[i]
     const isGoalkeeper = position === 'POR'
+    const age = 17 + Math.floor(rand() * 20)
     players.push({
       id: `p-${String(i + offset + 1).padStart(3, '0')}`,
       name: uniqueName(rand, usedNames),
       club: clubs[(i + 2) % clubs.length],
       position,
-      age: 17 + Math.floor(rand() * 20),
+      birthYear: SEASON_YEAR - age,
+      category: categoryForAge(age),
       played: 6 + Math.floor(rand() * 15),
       goals: isGoalkeeper ? 0 : Math.floor(rand() * 15),
       assists: isGoalkeeper ? Math.floor(rand() * 2) : Math.floor(rand() * 9),

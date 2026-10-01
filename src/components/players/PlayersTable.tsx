@@ -1,4 +1,5 @@
 import { FaEllipsisVertical, FaPenToSquare } from 'react-icons/fa6'
+import { CategoryBadge } from '@/components/players/CategoryBadge'
 import { PositionBadge } from '@/components/players/PositionBadge'
 import { Avatar } from '@/components/ui/Avatar'
 import { PanamaFlag } from '@/components/ui/PanamaFlag'
@@ -13,8 +14,8 @@ interface PlayersTableProps {
   startIndex?: number
 }
 
-const HEADERS = ['#', 'Jugador', 'Equipo', 'Posición', 'Edad', 'PJ', 'Goles', 'Asist.', 'TA', 'TR', 'Estado', 'Acciones']
-const NUMERIC_HEADERS = new Set(['Edad', 'PJ', 'Goles', 'Asist.', 'TA', 'TR'])
+const HEADERS = ['#', 'Jugador', 'Equipo', 'Posición', 'Categoría', 'Año de nacimiento', 'PJ', 'Goles', 'Asist.', 'TA', 'TR', 'Estado', 'Acciones']
+const NUMERIC_HEADERS = new Set(['Año de nacimiento', 'PJ', 'Goles', 'Asist.', 'TA', 'TR'])
 
 const STATUS_LABEL: Record<PlayerStatus, string> = {
   disponible: 'Disponible',
@@ -45,7 +46,7 @@ export function PlayersTable({ players, isLoading, startIndex = 0 }: PlayersTabl
   return (
     <div className="overflow-hidden rounded-card border border-border-strong bg-surface-deep shadow-card">
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[1260px] border-collapse text-left">
+        <table className="w-full min-w-[1400px] border-collapse text-left">
           <thead>
             <tr className="border-b border-border-faint bg-surface-sunken">
               {HEADERS.map((header) => (
@@ -74,7 +75,9 @@ export function PlayersTable({ players, isLoading, startIndex = 0 }: PlayersTabl
                             ? 'w-8'
                             : header === 'Jugador' || header === 'Equipo'
                               ? 'w-24'
-                              : 'w-10',
+                              : header === 'Categoría'
+                                ? 'w-16'
+                                : 'w-10',
                         )}
                       />
                     </td>
@@ -108,7 +111,10 @@ export function PlayersTable({ players, isLoading, startIndex = 0 }: PlayersTabl
                   <td className="h-[50px] px-2.5">
                     <PositionBadge position={player.position} />
                   </td>
-                  <td className="h-[50px] px-2.5 text-center text-[13px] tabular-nums text-content-secondary">{player.age}</td>
+                  <td className="h-[50px] px-2.5">
+                    <CategoryBadge category={player.category} />
+                  </td>
+                  <td className="h-[50px] px-2.5 text-center text-[13px] tabular-nums text-content-secondary">{player.birthYear}</td>
                   <td className="h-[50px] px-2.5 text-center text-[13px] tabular-nums text-content-secondary">{player.played}</td>
                   <td className="h-[50px] px-2.5 text-center text-[13px] font-bold tabular-nums text-content-primary">{player.goals}</td>
                   <td className="h-[50px] px-2.5 text-center text-[13px] tabular-nums text-content-secondary">{player.assists}</td>

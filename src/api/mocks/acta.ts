@@ -2,8 +2,8 @@ import type { ActaDetail, ActaInfoItem, ActaOfficial, ActaSignature, MatchFixtur
 import { clubById } from './clubs'
 import { matches } from './matches'
 
-const cai = clubById('cai')
 const tauro = clubById('tauro')
+const arabe = clubById('arabe')
 
 const DEFAULT_SIGNATURES: ActaSignature[] = [
   { role: 'Árbitro central', status: 'pendiente' },
@@ -50,7 +50,7 @@ function buildInfo(match: MatchFixture): ActaInfoItem[] {
 }
 
 export const actaDetails: Record<string, ActaDetail> = {
-  'j6-cai-tauro': {
+  'j6-tauro-arabe': {
     code: 'LPF-2026-006',
     competition: 'Primera División',
     division: 'Primera División',
@@ -69,7 +69,7 @@ export const actaDetails: Record<string, ActaDetail> = {
     ],
     officials: DEFAULT_OFFICIALS,
     home: {
-      club: cai,
+      club: tauro,
       starters: [
         { number: 1, name: 'Daniel Ríos', position: 'POR' },
         { number: 4, name: 'Carlos Mendoza', position: 'DEF' },
@@ -99,7 +99,7 @@ export const actaDetails: Record<string, ActaDetail> = {
       ],
     },
     away: {
-      club: tauro,
+      club: arabe,
       starters: [
         { number: 1, name: 'José Guerra', position: 'POR' },
         { number: 4, name: 'Ricardo Phillips', position: 'DEF' },
@@ -149,8 +149,8 @@ export function getActaDetail(matchId: string): ActaDetail {
       draftLabel: 'Borrador',
       info: buildInfo(matches[0]),
       officials: DEFAULT_OFFICIALS,
-      home: { club: cai, starters: [], substitutes: [], staff: [] },
-      away: { club: tauro, starters: [], substitutes: [], staff: [] },
+      home: { club: tauro, starters: [], substitutes: [], staff: [] },
+      away: { club: arabe, starters: [], substitutes: [], staff: [] },
       events: [],
       commissionerNotes: '',
       signatures: DEFAULT_SIGNATURES,

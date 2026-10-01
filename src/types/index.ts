@@ -155,12 +155,15 @@ export type PlayerPositionTabId = 'todos' | 'porteros' | 'defensas' | 'mediocamp
 
 export type PlayerStatus = 'disponible' | 'lesionado' | 'suspendido'
 
+export type PlayerCategory = 'sub-17' | 'sub-20' | 'sub-23' | 'mayor'
+
 export interface Player {
   id: string
   name: string
   club: Club
   position: PlayerPosition
-  age: number
+  birthYear: number
+  category: PlayerCategory
   played: number
   goals: number
   assists: number
