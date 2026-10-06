@@ -73,3 +73,76 @@ export function formatDocDate(iso: string): string {
   const month = parts.month.charAt(0) + parts.month.slice(1).toLowerCase()
   return `${parts.day} ${month} ${parts.year}`
 }
+
+// ===== Calendario =====
+
+const MONTHS_LONG = [
+  'Enero',
+  'Febrero',
+  'Marzo',
+  'Abril',
+  'Mayo',
+  'Junio',
+  'Julio',
+  'Agosto',
+  'Septiembre',
+  'Octubre',
+  'Noviembre',
+  'Diciembre',
+] as const
+
+const MONTHS_SHORT_LOWER = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'] as const
+
+export const WEEKDAYS_SHORT = ['LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB', 'DOM'] as const
+
+export interface CalendarCell {
+  iso: string
+  day: number
+  inMonth: boolean
+}
+
+export function formatMonthTitle(year: number, monthIndex: number): string {
+  return `${MONTHS_LONG[monthIndex]} ${year}`
+}
+
+export function formatDayMonthShort(iso: string): string {
+  const date = new Date(`${iso}T00:00:00`)
+  return `${date.getDate()} ${MONTHS_SHORT_LOWER[date.getMonth()]}`
+}
+
+function toIsoDate(date: Date): string {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+/** Devuelve el lunes de la semana de la fecha dada. */
+export function startOfWeekMonday(date: Date): Date {
+  const result = new Date(date)
+  const day = (result.getDay() + 6) % 7 // Lunes=0 … Domingo=6
+  result.setDate(result.getDate() - day)
+  return result
+}
+
+/** Rejilla de 42 celdas (6 semanas) empezando en lunes. */
+export function monthMatrix(year: number, monthIndex: number): CalendarCell[] {
+  const start = startOfWeekMonday(new Date(year, monthIndex, 1))
+  const cells: CalendarCell[] = []
+  for (let i = 0; i < 42; i++) {
+    const date = new Date(start)
+    date.setDate(start.getDate() + i)
+    cells.push({ iso: toIsoDate(date), day: date.getDate(), inMonth: date.getMonth() === monthIndex })
+  }
+  return cells
+}
+
+/** Rejilla de 7 celdas (una semana) empezando en lunes. */
+export function weekMatrix(date: Date): CalendarCell[] {
+  const start = startOfWeekMonday(date)
+  return Array.from({ length: 7 }, (_, i) => {
+    const day = new Date(start)
+    day.setDate(start.getDate() + i)
+    return { iso: toIsoDate(day), day: day.getDate(), inMonth: true }
+  })
+}

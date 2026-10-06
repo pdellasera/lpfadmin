@@ -3,10 +3,18 @@ import AppLayout from '@/components/layout/AppLayout'
 import HomePage from '@/pages/HomePage'
 import LoginPage from '@/pages/LoginPage'
 import MatchesPage from '@/pages/MatchesPage'
+import CalendarPage from '@/pages/CalendarPage'
 import MatchActaPage from '@/pages/MatchActaPage'
+import MatchRefereeReportPage from '@/pages/MatchRefereeReportPage'
 import PlayersPage from '@/pages/PlayersPage'
 import TeamsPage from '@/pages/TeamsPage'
+import StaffPage from '@/pages/StaffPage'
+import RefereesPage from '@/pages/RefereesPage'
+import SanctionsPage from '@/pages/SanctionsPage'
+import StadiumsPage from '@/pages/StadiumsPage'
 import TransparencyPage from '@/pages/TransparencyPage'
+import ReportsPage from '@/pages/ReportsPage'
+import JornadaReportPage from '@/pages/JornadaReportPage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
 
 export const router = createBrowserRouter([
@@ -19,14 +27,22 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: 'partidos', element: <MatchesPage /> },
       { path: 'partidos/:matchId/acta', element: <MatchActaPage /> },
+      { path: 'partidos/:matchId/informe-arbitro', element: <MatchRefereeReportPage /> },
       { path: 'equipos', element: <TeamsPage /> },
       { path: 'jugadores', element: <PlayersPage /> },
       { path: 'competencias', element: <PlaceholderPage title="Competencias" /> },
-      { path: 'estadios', element: <PlaceholderPage title="Estadios" /> },
+      { path: 'estadios', element: <StadiumsPage /> },
+      { path: 'calendario', element: <CalendarPage /> },
+      { path: 'cuerpo-tecnico', element: <StaffPage /> },
+      { path: 'arbitros', element: <RefereesPage /> },
+      { path: 'sanciones', element: <SanctionsPage /> },
+      { path: 'alertas-elegibilidad', element: <PlaceholderPage title="Alertas elegibilidad" /> },
+      { path: 'resoluciones', element: <PlaceholderPage title="Resoluciones" /> },
       { path: 'boletos', element: <PlaceholderPage title="Boletos" /> },
       { path: 'abonos', element: <PlaceholderPage title="Abonos" /> },
       { path: 'finanzas', element: <PlaceholderPage title="Finanzas" /> },
-      { path: 'reportes', element: <PlaceholderPage title="Reportes" /> },
+      { path: 'reportes', element: <ReportsPage /> },
+      { path: 'reportes/resumen-jornada', element: <JornadaReportPage /> },
       { path: 'transparencia', element: <TransparencyPage /> },
       { path: 'apis', element: <PlaceholderPage title="APIs" /> },
       { path: 'auditoria', element: <PlaceholderPage title="Auditoría" /> },

@@ -1,6 +1,9 @@
 import type {
   AttendanceSummary,
+  CalendarFixture,
+  HomeEvent,
   HomeStats,
+  JornadaReport,
   MatchFilterOptions,
   MatchFilters,
   MatchActa,
@@ -11,7 +14,21 @@ import type {
   Player,
   PlayerFilterOptions,
   PlayerFilters,
+  Referee,
+  RefereeFilterOptions,
+  RefereeFilters,
+  RefereeReport,
+  ReportsCatalog,
+  Sanction,
+  SanctionFilterOptions,
+  SanctionFilters,
   Scorer,
+  Stadium,
+  StadiumFilterOptions,
+  StadiumFilters,
+  StaffFilterOptions,
+  StaffFilters,
+  StaffMember,
   StandingRow,
   Team,
   TeamFilters,
@@ -20,13 +37,21 @@ import type {
 } from '@/types'
 import { USE_MOCK, delay, request } from './client'
 import { getActaDetail } from './mocks/acta'
+import { buildJornadaReport } from './mocks/jornadaReport'
+import { buildRefereeReport } from './mocks/refereeReport'
 import { attendance } from './mocks/attendance'
-import { homeStats, nextMatch } from './mocks/home'
+import { calendarFixtures } from './mocks/calendar'
+import { homeEvents, homeStats, nextMatch } from './mocks/home'
 import { matchFilterOptions, matches } from './mocks/matches'
 import { news } from './mocks/news'
 import { playerFilterOptions, players } from './mocks/players'
 import { recentResults } from './mocks/results'
+import { referees, refereeFilterOptions } from './mocks/referees'
+import { reportsCatalog } from './mocks/reports'
+import { sanctions, sanctionFilterOptions } from './mocks/sanctions'
 import { scorers } from './mocks/scorers'
+import { stadiums, stadiumFilterOptions } from './mocks/stadiums'
+import { staff, staffFilterOptions } from './mocks/staff'
 import { standings } from './mocks/standings'
 import { teams, teamFilterOptions } from './mocks/teams'
 import { transparency } from './mocks/transparency'
@@ -39,6 +64,11 @@ export async function getHomeStats(season: string): Promise<HomeStats> {
 export async function getNextMatch(season: string): Promise<NextMatch> {
   if (USE_MOCK) return delay(nextMatch)
   return request<NextMatch>('/home/next-match', { season })
+}
+
+export async function getHomeEvents(season: string): Promise<HomeEvent[]> {
+  if (USE_MOCK) return delay(homeEvents)
+  return request<HomeEvent[]>('/home/events', { season })
 }
 
 export async function getStandings(season: string): Promise<StandingRow[]> {
@@ -82,6 +112,22 @@ export async function getMatchFilters(season: string): Promise<MatchFilterOption
   return request<MatchFilterOptions>('/matches/filters', { season })
 }
 
+export async function getCalendarFixtures(season: string): Promise<CalendarFixture[]> {
+  if (USE_MOCK) return delay(calendarFixtures)
+  return request<CalendarFixture[]>('/calendar', { season })
+}
+
+export async function getUpcomingFixtures(season: string): Promise<CalendarFixture[]> {
+  if (USE_MOCK) {
+    return delay(
+      calendarFixtures
+        .filter((fixture) => fixture.phase === 'proximo')
+        .sort((a, b) => a.date.localeCompare(b.date)),
+    )
+  }
+  return request<CalendarFixture[]>('/calendar/upcoming', { season })
+}
+
 export async function getTeams(season: string, filters?: TeamFilters): Promise<Team[]> {
   if (USE_MOCK) return delay(teams)
   const params: Record<string, string | number> = { season }
@@ -114,6 +160,70 @@ export async function getPlayerFilters(season: string): Promise<PlayerFilterOpti
   return request<PlayerFilterOptions>('/players/filters', { season })
 }
 
+export async function getStaff(season: string, filters?: StaffFilters): Promise<StaffMember[]> {
+  if (USE_MOCK) return delay(staff)
+  const params: Record<string, string | number> = { season }
+  if (filters) {
+    for (const [key, value] of Object.entries(filters)) {
+      if (value) params[key] = value
+    }
+  }
+  return request<StaffMember[]>('/staff', params)
+}
+
+export async function getStaffFilters(season: string): Promise<StaffFilterOptions> {
+  if (USE_MOCK) return delay(staffFilterOptions)
+  return request<StaffFilterOptions>('/staff/filters', { season })
+}
+
+export async function getReferees(season: string, filters?: RefereeFilters): Promise<Referee[]> {
+  if (USE_MOCK) return delay(referees)
+  const params: Record<string, string | number> = { season }
+  if (filters) {
+    for (const [key, value] of Object.entries(filters)) {
+      if (value) params[key] = value
+    }
+  }
+  return request<Referee[]>('/referees', params)
+}
+
+export async function getRefereeFilters(season: string): Promise<RefereeFilterOptions> {
+  if (USE_MOCK) return delay(refereeFilterOptions)
+  return request<RefereeFilterOptions>('/referees/filters', { season })
+}
+
+export async function getStadiums(season: string, filters?: StadiumFilters): Promise<Stadium[]> {
+  if (USE_MOCK) return delay(stadiums)
+  const params: Record<string, string | number> = { season }
+  if (filters) {
+    for (const [key, value] of Object.entries(filters)) {
+      if (value) params[key] = value
+    }
+  }
+  return request<Stadium[]>('/stadiums', params)
+}
+
+export async function getStadiumFilters(season: string): Promise<StadiumFilterOptions> {
+  if (USE_MOCK) return delay(stadiumFilterOptions)
+  return request<StadiumFilterOptions>('/stadiums/filters', { season })
+}
+
+export async function getSanctions(season: string, filters?: SanctionFilters): Promise<Sanction[]> {
+  if (USE_MOCK) return delay(sanctions)
+  const params: Record<string, string | number> = { season }
+  if (filters) {
+    for (const [key, value] of Object.entries(filters)) {
+      if (value) params[key] = value
+    }
+  }
+  return request<Sanction[]>('/sanctions', params)
+}
+
+export async function getSanctionFilters(season: string): Promise<SanctionFilterOptions> {
+  if (USE_MOCK) return delay(sanctionFilterOptions)
+  return request<SanctionFilterOptions>('/sanctions/filters', { season })
+}
+
 export async function getMatchActa(matchId: string): Promise<MatchActa> {
   if (USE_MOCK) {
     const match = matches.find((item) => item.id === matchId)
@@ -123,7 +233,22 @@ export async function getMatchActa(matchId: string): Promise<MatchActa> {
   return request<MatchActa>(`/matches/${matchId}/acta`)
 }
 
+export async function getRefereeReport(matchId: string): Promise<RefereeReport> {
+  if (USE_MOCK) return delay(buildRefereeReport(matchId))
+  return request<RefereeReport>(`/matches/${matchId}/referee-report`)
+}
+
 export async function getTransparency(season: string): Promise<TransparencySummary> {
   if (USE_MOCK) return delay({ ...transparency, period: season })
   return request<TransparencySummary>('/transparency', { season })
+}
+
+export async function getReports(season: string): Promise<ReportsCatalog> {
+  if (USE_MOCK) return delay({ ...reportsCatalog, season })
+  return request<ReportsCatalog>('/reports', { season })
+}
+
+export async function getJornadaReport(season: string): Promise<JornadaReport> {
+  if (USE_MOCK) return delay(buildJornadaReport(season))
+  return request<JornadaReport>('/reports/resumen-jornada', { season })
 }

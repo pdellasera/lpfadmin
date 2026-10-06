@@ -85,19 +85,19 @@ export function MatchRow({ match }: MatchRowProps) {
         </div>
         <div className="flex items-center gap-2">
           <Link
-            to={`/panel/partidos/${match.id}/acta`}
+            to={`/panel/partidos/${match.id}/informe-arbitro`}
             className="flex h-9 w-[150px] items-center justify-center gap-2 rounded-lg border border-border-action bg-surface-control text-[13px] font-semibold text-content-primary transition-colors hover:bg-surface-control-hover"
           >
             <FaFileLines className="text-xs" />
             Ver actas
           </Link>
-          <button
-            type="button"
+          <Link
+            to={`/panel/partidos/${match.id}/informe-arbitro`}
             className="flex h-9 w-[150px] items-center justify-center gap-2 rounded-lg bg-action text-[13px] font-semibold text-white transition-colors hover:bg-action-hover"
           >
             <FaClipboardList className="text-xs" />
             Tablero Árbitro
-          </button>
+          </Link>
         </div>
       </div>
     </motion.div>

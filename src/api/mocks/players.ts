@@ -57,21 +57,24 @@ interface ReferenceRow {
   assists: number
   yellow: number
   red: number
+  heightCm: number
+  weightKg: number
+  salary: number
 }
 
 // The 10 players shown on the first page of the reference screenshot.
 // Columns: AÑO NACIMIENTO · CATEGORÍA · PJ · GOLES · ASIST · TA · TR (in that order).
 const REFERENCE_ROWS: ReferenceRow[] = [
-  { name: 'Gabriel Torres', clubId: 'arabe', position: 'DEL', age: 29, played: 18, goals: 12, assists: 5, yellow: 3, red: 0 },
-  { name: 'José Martínez', clubId: 'tauro', position: 'POR', age: 31, played: 16, goals: 0, assists: 0, yellow: 1, red: 0 },
-  { name: 'Luis Rodríguez', clubId: 'universitario', position: 'DEF', age: 27, played: 15, goals: 1, assists: 3, yellow: 4, red: 1 },
-  { name: 'Ernesto Sinclair', clubId: 'sporting', position: 'MED', age: 25, played: 17, goals: 6, assists: 4, yellow: 2, red: 0 },
-  { name: 'Carlos Pérez', clubId: 'herrera', position: 'DEF', age: 24, played: 14, goals: 0, assists: 1, yellow: 3, red: 0 },
-  { name: 'Jair Catuy', clubId: 'veraguas', position: 'DEL', age: 28, played: 16, goals: 7, assists: 2, yellow: 1, red: 0 },
-  { name: 'Kevin Galván', clubId: 'sanfrancisco', position: 'MED', age: 23, played: 15, goals: 2, assists: 3, yellow: 2, red: 1 },
-  { name: 'Ricardo Phillips Jr.', clubId: 'sporting', position: 'DEL', age: 21, played: 13, goals: 4, assists: 2, yellow: 0, red: 0 },
-  { name: 'Manuel Gamboa', clubId: 'universitario', position: 'DEF', age: 26, played: 14, goals: 1, assists: 0, yellow: 5, red: 1 },
-  { name: 'Andrés Vega', clubId: 'veraguas', position: 'MED', age: 21, played: 15, goals: 3, assists: 5, yellow: 2, red: 0 },
+  { name: 'Gabriel Torres', clubId: 'arabe', position: 'DEL', age: 29, played: 18, goals: 12, assists: 5, yellow: 3, red: 0, heightCm: 180, weightKg: 76, salary: 4500 },
+  { name: 'José Martínez', clubId: 'tauro', position: 'POR', age: 31, played: 16, goals: 0, assists: 0, yellow: 1, red: 0, heightCm: 189, weightKg: 85, salary: 3800 },
+  { name: 'Luis Rodríguez', clubId: 'universitario', position: 'DEF', age: 27, played: 15, goals: 1, assists: 3, yellow: 4, red: 1, heightCm: 184, weightKg: 81, salary: 3200 },
+  { name: 'Ernesto Sinclair', clubId: 'sporting', position: 'MED', age: 25, played: 17, goals: 6, assists: 4, yellow: 2, red: 0, heightCm: 176, weightKg: 72, salary: 3000 },
+  { name: 'Carlos Pérez', clubId: 'herrera', position: 'DEF', age: 24, played: 14, goals: 0, assists: 1, yellow: 3, red: 0, heightCm: 182, weightKg: 79, salary: 2600 },
+  { name: 'Jair Catuy', clubId: 'veraguas', position: 'DEL', age: 28, played: 16, goals: 7, assists: 2, yellow: 1, red: 0, heightCm: 178, weightKg: 74, salary: 3400 },
+  { name: 'Kevin Galván', clubId: 'sanfrancisco', position: 'MED', age: 23, played: 15, goals: 2, assists: 3, yellow: 2, red: 1, heightCm: 174, weightKg: 70, salary: 2400 },
+  { name: 'Ricardo Phillips Jr.', clubId: 'sporting', position: 'DEL', age: 21, played: 13, goals: 4, assists: 2, yellow: 0, red: 0, heightCm: 172, weightKg: 68, salary: 4200 },
+  { name: 'Manuel Gamboa', clubId: 'universitario', position: 'DEF', age: 26, played: 14, goals: 1, assists: 0, yellow: 5, red: 1, heightCm: 186, weightKg: 83, salary: 2500 },
+  { name: 'Andrés Vega', clubId: 'veraguas', position: 'MED', age: 21, played: 15, goals: 3, assists: 5, yellow: 2, red: 0, heightCm: 177, weightKg: 73, salary: 2300 },
 ]
 
 // Distribution taken from the screenshot counters: 48 POR / 138 DEF / 162 MED / 134 DEL (482 players).
@@ -105,6 +108,9 @@ function buildReferencePlayers(): Player[] {
       assists: row.assists,
       yellowCards: row.yellow,
       redCards: row.red,
+      heightCm: row.heightCm,
+      weightKg: row.weightKg,
+      salary: row.salary,
       status: 'disponible',
       photoUrl: PHOTO_POOL[index % PHOTO_POOL.length],
     }),
@@ -159,6 +165,9 @@ function buildGeneratedPlayers(): Player[] {
     const position = positions[i]
     const isGoalkeeper = position === 'POR'
     const age = 17 + Math.floor(rand() * 20)
+    const heightCm = 168 + Math.floor(rand() * 20)
+    const weightKg = heightCm - 100 + Math.floor(rand() * 7) - 3
+    const salary = 1200 + Math.floor(rand() * 21) * 150
     players.push({
       id: `p-${String(i + offset + 1).padStart(3, '0')}`,
       name: uniqueName(rand, usedNames),
@@ -171,6 +180,9 @@ function buildGeneratedPlayers(): Player[] {
       assists: isGoalkeeper ? Math.floor(rand() * 2) : Math.floor(rand() * 9),
       yellowCards: Math.floor(rand() * 7),
       redCards: rand() < 0.12 ? 1 : rand() < 0.03 ? 2 : 0,
+      heightCm,
+      weightKg,
+      salary,
       status: rollStatus(rand),
       photoUrl: PHOTO_POOL[i % PHOTO_POOL.length],
     })

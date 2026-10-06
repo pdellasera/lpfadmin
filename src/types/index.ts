@@ -78,6 +78,19 @@ export interface NewsItem {
   featured: boolean
 }
 
+// ===== Bandeja de eventos (Home) =====
+
+export type HomeEventKind = 'alerta' | 'pendiente' | 'validado' | 'info'
+
+export interface HomeEvent {
+  id: string
+  kind: HomeEventKind
+  title: string
+  description: string
+  timeLabel: string // e.g. "hace 12 min", "hoy 09:14"
+  source?: string // e.g. "automático", "en vivo"
+}
+
 export type MatchStatus = 'acta-disponible' | 'sin-acta'
 
 export type MatchPhase = 'proximo' | 'en-vivo' | 'finalizado'
@@ -98,6 +111,24 @@ export interface MatchFixture {
   city: string
   status: MatchStatus
   phase: MatchPhase
+}
+
+export type CompetitionCategory = 'LPF' | 'LIGA-PROM' | 'FEMENINA' | 'JUVENIL'
+
+export type CalendarView = 'mensual' | 'semanal' | 'lista'
+
+export interface CalendarFixture {
+  id: string
+  date: string // ISO (YYYY-MM-DD)
+  time?: string
+  phase: MatchPhase
+  category: CompetitionCategory
+  stadium?: string
+  referee?: string
+  homeClub?: Club
+  awayClub?: Club
+  label?: string // e.g. "Final ida"
+  note?: string // e.g. "ganadores semifinales"
 }
 
 export interface MatchFilterOption {
@@ -169,6 +200,9 @@ export interface Player {
   assists: number
   yellowCards: number
   redCards: number
+  heightCm: number
+  weightKg: number
+  salary: number
   status: PlayerStatus
   photoUrl?: string
 }
@@ -282,6 +316,63 @@ export interface MatchActa {
   detail: ActaDetail
 }
 
+// ===== Informe del Árbitro =====
+
+export interface RefereeGoalRow {
+  number: string
+  player: string
+  penalty: boolean
+  ownGoal: boolean
+  minute: number | null
+}
+
+export interface RefereeSubRow {
+  minute: number | null
+  outNumber: string
+  outPlayer: string
+  inNumber: string
+  inPlayer: string
+}
+
+export interface RefereePenaltyKick {
+  number: string
+  scored: boolean
+}
+
+export interface RefereeOfficials {
+  referee: string
+  assistant1: string
+  assistant2: string
+  fourthOfficial: string
+  assessor: string
+  commissioner: string
+}
+
+export interface RefereeReport {
+  gameNumber: string
+  round: number
+  home: Club
+  away: Club
+  playedAt: string
+  stadium: string
+  date: string
+  time: string
+  scoreHome: number
+  scoreAway: number
+  halfTimeHome: number
+  halfTimeAway: number
+  firstHalfWinner: string
+  fullTimeWinner: string
+  officials: RefereeOfficials
+  goalsHome: RefereeGoalRow[]
+  goalsAway: RefereeGoalRow[]
+  penaltiesHome: RefereePenaltyKick[]
+  penaltiesAway: RefereePenaltyKick[]
+  subsHome: RefereeSubRow[]
+  subsAway: RefereeSubRow[]
+  incidents: string[]
+}
+
 // ===== Transparencia =====
 
 export type TransparencyTabId =
@@ -391,5 +482,360 @@ export interface TransparencySummary {
   documents: TransparencyFileRow[]
   indicators: TransparencyIndicator[]
   sap: SapStatus
+}
+
+// ===== Cuerpo técnico =====
+
+export type StaffRoleCode = 'DT' | 'AT' | 'PF' | 'EP' | 'AN' | 'MED' | 'FIS' | 'NUT' | 'DEL' | 'UTI'
+
+export type StaffRoleGroupId = 'todos' | 'tecnico' | 'medico' | 'administrativo'
+
+export type StaffStatus = 'activo' | 'inactivo'
+
+export interface StaffMember {
+  id: string
+  name: string
+  role: StaffRoleCode
+  club: Club
+  nationality: string
+  foreign: boolean
+  license: string
+  birthYear: number
+  joinedYear: number
+  salary: number
+  status: StaffStatus
+  photoUrl?: string
+}
+
+export interface StaffFilters {
+  club: string
+  role: string
+  status: string
+  search: string
+}
+
+export interface StaffFilterOptions {
+  clubs: MatchFilterOption[]
+  roles: MatchFilterOption[]
+  statuses: MatchFilterOption[]
+}
+
+export interface StaffRoleCounts {
+  total: number
+  tecnico: number
+  medico: number
+  administrativo: number
+}
+
+// ===== Árbitros =====
+
+export type RefereeRoleCode = 'CEN' | 'AR1' | 'AR2' | 'CU4' | 'VAR' | 'AVAR' | 'ASE' | 'COM'
+
+export type RefereeRoleGroupId = 'todos' | 'centrales' | 'asistentes' | 'var' | 'comisarios'
+
+export type RefereeCategory = 'FIFA' | 'Nacional' | 'Regional'
+
+export type RefereeStatus = 'disponible' | 'lesionado' | 'suspendido' | 'inactivo'
+
+export interface Referee {
+  id: string
+  name: string
+  role: RefereeRoleCode
+  category: RefereeCategory
+  province: string
+  nationality: string
+  foreign: boolean
+  license: string
+  birthYear: number
+  matches: number
+  yellowCards: number
+  redCards: number
+  rating: number
+  status: RefereeStatus
+  photoUrl?: string
+}
+
+export interface RefereeFilters {
+  role: string
+  category: string
+  status: string
+  search: string
+}
+
+export interface RefereeFilterOptions {
+  roles: MatchFilterOption[]
+  categories: MatchFilterOption[]
+  statuses: MatchFilterOption[]
+}
+
+export interface RefereeRoleCounts {
+  total: number
+  centrales: number
+  asistentes: number
+  var: number
+  comisarios: number
+}
+
+// ===== Estadios =====
+
+export type StadiumSurface = 'natural' | 'sintetico' | 'hibrido'
+
+export type StadiumStatus = 'operativo' | 'mantenimiento' | 'clausurado'
+
+export type StadiumRegionId = 'todos' | 'capital' | 'occidente' | 'azuero' | 'oriente'
+
+export interface Stadium {
+  id: string
+  name: string
+  city: string
+  province: string
+  region: Exclude<StadiumRegionId, 'todos'>
+  club?: Club
+  capacity: number
+  surface: StadiumSurface
+  dimensions: string
+  openedYear: number
+  matches: number
+  avgAttendance: number
+  occupancy: number
+  status: StadiumStatus
+  imageUrl?: string
+}
+
+export interface StadiumFilters {
+  province: string
+  surface: string
+  status: string
+  search: string
+}
+
+export interface StadiumFilterOptions {
+  provinces: MatchFilterOption[]
+  surfaces: MatchFilterOption[]
+  statuses: MatchFilterOption[]
+}
+
+export interface StadiumCounts {
+  total: number
+  capital: number
+  occidente: number
+  azuero: number
+  oriente: number
+}
+
+// ===== Sanciones =====
+
+export type SanctionTargetType = 'jugador' | 'cuerpo-tecnico' | 'club'
+
+export type SanctionGroupId = 'todas' | 'jugadores' | 'cuerpo-tecnico' | 'clubes'
+
+export type SanctionInfractionCode =
+  | 'roja-directa'
+  | 'doble-amarilla'
+  | 'acumulacion-amarillas'
+  | 'conducta'
+  | 'agresion'
+  | 'retraso'
+  | 'incomparecencia'
+  | 'otros'
+
+export type SanctionStatus = 'pendiente' | 'cumplida' | 'apelada' | 'reducida' | 'anulada'
+
+export interface Sanction {
+  id: string
+  code: string
+  targetType: SanctionTargetType
+  name: string
+  position?: PlayerPosition
+  role?: StaffRoleCode
+  club: Club
+  infraction: SanctionInfractionCode
+  card?: 'amarilla' | 'roja'
+  matchId?: string
+  matchLabel?: string
+  matchDate?: string
+  matches: number
+  fine: number
+  status: SanctionStatus
+  issuedDate: string
+  resolution?: string
+}
+
+export interface SanctionFilters {
+  status: string
+  club: string
+  infraction: string
+  search: string
+}
+
+export interface SanctionFilterOptions {
+  statuses: MatchFilterOption[]
+  clubs: MatchFilterOption[]
+  infractions: MatchFilterOption[]
+}
+
+export interface SanctionGroupCounts {
+  total: number
+  jugadores: number
+  cuerpoTecnico: number
+  clubes: number
+  pendientes: number
+}
+
+// ===== Reportes =====
+
+export type ReportCategoryId = 'jornada' | 'competicion' | 'disciplinarios' | 'administrativos'
+
+export type ReportFormat = 'pdf' | 'xlsx' | 'csv'
+
+export type ReportStatus = 'actualizado' | 'programado' | 'obsoleto'
+
+export interface ReportCatalogItem {
+  id: string
+  category: ReportCategoryId
+  title: string
+  description: string
+  formats: ReportFormat[]
+  updatedAt: string // ISO date (YYYY-MM-DD)
+  records: number
+  status: ReportStatus
+  href?: string
+}
+
+export interface ReportGroup {
+  id: ReportCategoryId
+  label: string
+  items: ReportCatalogItem[]
+}
+
+export interface ReportsCatalog {
+  season: string
+  groups: ReportGroup[]
+  total: number
+}
+
+// ===== Reporte: Resumen de jornada =====
+
+export interface JornadaStandingRow {
+  position: number
+  club: string // short code (PLA, ALI, UME, …)
+  points: number
+  played: number
+  won: number
+  drawn: number
+  lost: number
+  goalsFor: number
+  goalsAgainst: number
+  renderPct: string
+  promGf: string
+  promGc: string
+  ppj: string
+}
+
+export interface JornadaConferenceTable {
+  label: string
+  rows: JornadaStandingRow[]
+}
+
+export interface JornadaPanel {
+  key: string
+  title: string
+}
+
+export interface JornadaRoundRow {
+  position: number
+  club: string
+  played: number
+  won: number
+  drawn: number
+  lost: number
+  goalsFor: number
+  goalsAgainst: number
+  points: number
+}
+
+export interface JornadaPhaseScore {
+  phase: string
+  scores: string[]
+}
+
+export interface JornadaPlayoffMatch {
+  date: string
+  phase: 'PO' | 'SI' | 'SV'
+  home: string
+  homeGoals: number
+  awayGoals: number
+  away: string
+  stadium: string
+}
+
+export interface JornadaScorerRow {
+  position: number
+  player: string
+  number: number | null
+  club: string
+  goals: number
+}
+
+export interface JornadaRoundScorer {
+  player: string
+  number: number
+  minute: string
+  club: string
+  goals: number
+}
+
+export interface JornadaDisciplinaryRow {
+  club: string
+  number: string
+  player: string
+  qty: string
+  sanction: string
+}
+
+export interface JornadaSuspensionRow {
+  club: string
+  number: string
+  player: string
+  role: string
+  sanction: string
+  rounds: string
+  remaining: string
+}
+
+export interface JornadaBannedRow {
+  player: string
+  role: string
+  resolution: string
+}
+
+export interface JornadaYouthMinutesRow {
+  position: number
+  club: string
+  roundMinutes: string | null
+  totalMinutes: string
+  percent: string
+}
+
+export interface JornadaReport {
+  season: string
+  league: string
+  tournament: string
+  round: string
+  conferences: JornadaConferenceTable[]
+  acumulada: JornadaStandingRow[]
+  panels: JornadaPanel[]
+  concacafNote: string[]
+  roundTable: JornadaRoundRow[]
+  phaseScores: JornadaPhaseScore[]
+  playoffs: JornadaPlayoffMatch[]
+  scorers: JornadaScorerRow[]
+  roundScorers: JornadaRoundScorer[]
+  disciplinary: JornadaDisciplinaryRow[]
+  suspensions: JornadaSuspensionRow[]
+  suspensions2025: JornadaSuspensionRow[]
+  banned: JornadaBannedRow[]
+  noClubBan: JornadaBannedRow
+  youthMinutes: JornadaYouthMinutesRow[]
 }
 

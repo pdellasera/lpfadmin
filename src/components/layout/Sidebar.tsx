@@ -1,20 +1,21 @@
 import { NavLink } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
-  FaChartColumn,
-  FaClipboardCheck,
+  FaBan,
+  FaCalendarDays,
+  FaChartLine,
+  FaCircleDot,
+  FaClockRotateLeft,
   FaDisplay,
-  FaGear,
-  FaHouse,
-  FaMoneyBillTrendUp,
-  FaNewspaper,
+  FaFileSignature,
+  FaPlug,
   FaShieldHalved,
-  FaTicket,
-  FaUserGroup,
+  FaTableCells,
+  FaTriangleExclamation,
+  FaUser,
   FaUsers,
-  FaWallet,
 } from 'react-icons/fa6'
-import { GiSoccerKick, GiTrophy } from 'react-icons/gi'
+import { GiWhistle } from 'react-icons/gi'
 import { TbBuildingStadium } from 'react-icons/tb'
 import type { IconType } from 'react-icons'
 import { cn } from '@/lib/cn'
@@ -24,6 +25,7 @@ interface NavItem {
   label: string
   to: string
   icon: IconType
+  badge?: number
 }
 
 interface NavGroup {
@@ -33,22 +35,38 @@ interface NavGroup {
 
 const navGroups: NavGroup[] = [
   {
+    label: 'Principal',
     items: [
-      { label: 'Inicio', to: '/panel', icon: FaHouse },
-      { label: 'Partidos', to: '/panel/partidos', icon: GiSoccerKick },
-      { label: 'Equipos', to: '/panel/equipos', icon: FaShieldHalved },
-      { label: 'Jugadores', to: '/panel/jugadores', icon: FaUsers },
-      { label: 'Competencias', to: '/panel/competencias', icon: GiTrophy },
+      { label: 'Dashboard', to: '/panel', icon: FaTableCells },
+      { label: 'Partidos en vivo', to: '/panel/partidos', icon: FaCircleDot, badge: 2 },
+      { label: 'Calendario', to: '/panel/calendario', icon: FaCalendarDays },
+    ],
+  },
+  {
+    label: 'Competición',
+    items: [
+      { label: 'Clubes', to: '/panel/equipos', icon: FaShieldHalved },
+      { label: 'Jugadores', to: '/panel/jugadores', icon: FaUser },
+      { label: 'Cuerpo técnico', to: '/panel/cuerpo-tecnico', icon: FaUsers },
+      { label: 'Árbitros', to: '/panel/arbitros', icon: GiWhistle },
       { label: 'Estadios', to: '/panel/estadios', icon: TbBuildingStadium },
-      { label: 'Boletos', to: '/panel/boletos', icon: FaTicket },
-      { label: 'Abonos', to: '/panel/abonos', icon: FaWallet },
-      { label: 'Finanzas', to: '/panel/finanzas', icon: FaMoneyBillTrendUp },
-      { label: 'Reportes', to: '/panel/reportes', icon: FaChartColumn },
+    ],
+  },
+  {
+    label: 'Disciplina',
+    items: [
+      { label: 'Sanciones', to: '/panel/sanciones', icon: FaBan, badge: 7 },
+      { label: 'Alertas elegibilidad', to: '/panel/alertas-elegibilidad', icon: FaTriangleExclamation },
+      { label: 'Resoluciones', to: '/panel/resoluciones', icon: FaFileSignature },
+    ],
+  },
+  {
+    label: 'Datos',
+    items: [
+      { label: 'Reportes', to: '/panel/reportes', icon: FaChartLine },
       { label: 'Transparencia', to: '/panel/transparencia', icon: FaDisplay },
-      { label: 'Auditoría', to: '/panel/auditoria', icon: FaClipboardCheck },
-      { label: 'Noticias', to: '/panel/noticias', icon: FaNewspaper },
-      { label: 'Usuarios', to: '/panel/usuarios', icon: FaUserGroup },
-      { label: 'Configuración', to: '/panel/configuracion', icon: FaGear },
+      { label: 'API pública', to: '/panel/apis', icon: FaPlug },
+      { label: 'Auditoría', to: '/panel/auditoria', icon: FaClockRotateLeft },
     ],
   },
 ]
@@ -89,6 +107,16 @@ function SidebarLink({ item, onNavigate }: SidebarLinkProps) {
           >
             {item.label}
           </span>
+          {item.badge && (
+            <span
+              className={cn(
+                'relative z-10 ml-auto rounded-md px-1.5 py-0.5 text-[10px] font-bold leading-none text-white',
+                isActive ? 'bg-white/20' : 'bg-rose-500',
+              )}
+            >
+              {item.badge}
+            </span>
+          )}
         </>
       )}
     </NavLink>

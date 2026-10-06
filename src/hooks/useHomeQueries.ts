@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import {
   getAttendance,
+  getHomeEvents,
   getHomeStats,
   getNews,
   getNextMatch,
@@ -23,6 +24,14 @@ export function useNextMatch() {
   return useQuery({
     queryKey: ['home', 'next-match', season],
     queryFn: () => getNextMatch(season),
+  })
+}
+
+export function useHomeEvents() {
+  const { season } = useSeason()
+  return useQuery({
+    queryKey: ['home', 'events', season],
+    queryFn: () => getHomeEvents(season),
   })
 }
 

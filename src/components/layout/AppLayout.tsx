@@ -11,8 +11,8 @@ export default function AppLayout() {
   const outlet = useOutlet()
 
   return (
-    <div className="flex h-dvh overflow-hidden">
-      <aside className="hidden h-screen shrink-0 lg:block">
+    <div className="app-layout flex h-dvh overflow-hidden">
+      <aside className="hidden h-screen shrink-0 print:hidden lg:block">
         <Sidebar />
       </aside>
 
@@ -41,9 +41,11 @@ export default function AppLayout() {
         )}
       </AnimatePresence>
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <Topbar onMenuClick={() => setMenuOpen(true)} />
-        <main className="scrollbar-slim flex-1 overflow-y-auto">
+      <div className="app-shell flex min-w-0 flex-1 flex-col">
+        <div className="print:hidden">
+          <Topbar onMenuClick={() => setMenuOpen(true)} />
+        </div>
+        <main className="app-main scrollbar-slim flex-1 overflow-y-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
@@ -51,13 +53,15 @@ export default function AppLayout() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25 }}
-              className="mx-auto w-full max-w-[1600px] px-3 py-2 lg:px-6 lg:py-3"
+              className="app-content mx-auto w-full max-w-[1600px] px-3 py-2 lg:px-6 lg:py-3"
             >
               {outlet}
             </motion.div>
           </AnimatePresence>
         </main>
-        <Footer />
+        <div className="print:hidden">
+          <Footer />
+        </div>
       </div>
     </div>
   )

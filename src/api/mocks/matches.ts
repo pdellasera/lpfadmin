@@ -3,6 +3,32 @@ import { clubById, clubs } from './clubs'
 
 export const matches: MatchFixture[] = [
   {
+    id: 'j6-universitario-tauro',
+    competition: 'LPF',
+    round: 6,
+    homeClub: clubById('universitario'),
+    awayClub: clubById('tauro'),
+    date: '2026-01-24',
+    time: '8:00 p.m.',
+    stadium: 'Estadio Universidad Latina',
+    city: 'Ciudad de Panamá',
+    status: 'acta-disponible',
+    phase: 'en-vivo',
+  },
+  {
+    id: 'j6-sanfrancisco-veraguas',
+    competition: 'LPF',
+    round: 6,
+    homeClub: clubById('sanfrancisco'),
+    awayClub: clubById('veraguas'),
+    date: '2026-01-24',
+    time: '6:00 p.m.',
+    stadium: 'Estadio Agustín Sánchez',
+    city: 'La Chorrera',
+    status: 'sin-acta',
+    phase: 'en-vivo',
+  },
+  {
     id: 'j6-tauro-arabe',
     competition: 'LPF',
     round: 6,

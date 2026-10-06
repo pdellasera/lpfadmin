@@ -6,6 +6,7 @@ import { PanamaFlag } from '@/components/ui/PanamaFlag'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { TeamCrest } from '@/components/ui/TeamCrest'
 import { cn } from '@/lib/cn'
+import { formatMoney } from '@/lib/format'
 import type { Player, PlayerStatus } from '@/types'
 
 interface PlayersTableProps {
@@ -14,8 +15,8 @@ interface PlayersTableProps {
   startIndex?: number
 }
 
-const HEADERS = ['#', 'Jugador', 'Equipo', 'Posición', 'Categoría', 'Año de nacimiento', 'PJ', 'Goles', 'Asist.', 'TA', 'TR', 'Estado', 'Acciones']
-const NUMERIC_HEADERS = new Set(['Año de nacimiento', 'PJ', 'Goles', 'Asist.', 'TA', 'TR'])
+const HEADERS = ['#', 'Jugador', 'Equipo', 'Pos.', 'Categoría', 'Año nac.', 'Altura', 'Peso', 'PJ', 'Goles', 'Asist.', 'TA', 'TR', 'Salario', 'Estado', 'Acciones']
+const NUMERIC_HEADERS = new Set(['Año nac.', 'Altura', 'Peso', 'PJ', 'Goles', 'Asist.', 'TA', 'TR', 'Salario'])
 
 const STATUS_LABEL: Record<PlayerStatus, string> = {
   disponible: 'Disponible',
@@ -45,8 +46,8 @@ function headerClass(header: string): string {
 export function PlayersTable({ players, isLoading, startIndex = 0 }: PlayersTableProps) {
   return (
     <div className="overflow-hidden rounded-card border border-border-strong bg-surface-deep shadow-card">
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[1400px] border-collapse text-left">
+      <div>
+        <table className="w-full border-collapse text-left">
           <thead>
             <tr className="border-b border-border-faint bg-surface-sunken">
               {HEADERS.map((header) => (
@@ -71,13 +72,17 @@ export function PlayersTable({ players, isLoading, startIndex = 0 }: PlayersTabl
                       <Skeleton
                         className={cn(
                           'h-3.5',
-                          header === '#' || header === 'Posición'
+                          header === '#' || header === 'Pos.'
                             ? 'w-8'
                             : header === 'Jugador' || header === 'Equipo'
                               ? 'w-24'
                               : header === 'Categoría'
                                 ? 'w-16'
-                                : 'w-10',
+                                : header === 'Altura' || header === 'Peso'
+                                  ? 'w-12'
+                                  : header === 'Salario'
+                                    ? 'w-16'
+                                    : 'w-10',
                         )}
                       />
                     </td>
@@ -115,6 +120,8 @@ export function PlayersTable({ players, isLoading, startIndex = 0 }: PlayersTabl
                     <CategoryBadge category={player.category} />
                   </td>
                   <td className="h-[50px] px-2.5 text-center text-[13px] tabular-nums text-content-secondary">{player.birthYear}</td>
+                  <td className="h-[50px] px-2.5 text-center text-[13px] tabular-nums text-content-secondary">{player.heightCm} cm</td>
+                  <td className="h-[50px] px-2.5 text-center text-[13px] tabular-nums text-content-secondary">{player.weightKg} kg</td>
                   <td className="h-[50px] px-2.5 text-center text-[13px] tabular-nums text-content-secondary">{player.played}</td>
                   <td className="h-[50px] px-2.5 text-center text-[13px] font-bold tabular-nums text-content-primary">{player.goals}</td>
                   <td className="h-[50px] px-2.5 text-center text-[13px] tabular-nums text-content-secondary">{player.assists}</td>
@@ -135,6 +142,9 @@ export function PlayersTable({ players, isLoading, startIndex = 0 }: PlayersTabl
                     ) : (
                       <span className="text-[13px] text-content-faint">0</span>
                     )}
+                  </td>
+                  <td className="h-[50px] px-2.5 text-center text-[13px] font-semibold tabular-nums text-content-primary">
+                    {formatMoney(player.salary)}
                   </td>
                   <td className="h-[50px] px-2.5">
                     <div className="flex items-center gap-2">
