@@ -839,3 +839,171 @@ export interface JornadaReport {
   youthMinutes: JornadaYouthMinutesRow[]
 }
 
+// ===== API pública =====
+
+export type ApiEnvironment = 'produccion' | 'sandbox'
+
+export type ApiServiceStatus = 'operativa' | 'degradada' | 'mantenimiento'
+
+export type ApiKeyStatus = 'activa' | 'revocada' | 'expirada'
+
+export type ApiMethod = 'GET' | 'POST'
+
+export type ApiLanguage = 'curl' | 'javascript' | 'python' | 'php'
+
+export type ApiMetricId = 'solicitudes' | 'uptime' | 'latencia' | 'limite'
+
+export interface ApiMetric {
+  id: ApiMetricId
+  label: string
+  value: number
+  format: 'number' | 'percent' | 'millis'
+  tone: KpiTileTone
+  delta?: TransparencyDelta
+  caption?: string
+}
+
+export interface ApiKeyItem {
+  id: string
+  name: string
+  prefix: string
+  scopes: string[]
+  createdAt: string
+  lastUsedAt: string
+  requests30d: number
+  status: ApiKeyStatus
+}
+
+export interface ApiEndpoint {
+  id: string
+  method: ApiMethod
+  path: string
+  summary: string
+}
+
+export interface ApiEndpointGroup {
+  id: string
+  label: string
+  endpoints: ApiEndpoint[]
+}
+
+export interface ApiCodeSample {
+  id: ApiLanguage
+  label: string
+  code: string
+}
+
+export interface ApiRatePlan {
+  id: string
+  name: string
+  description: string
+  requestsPerMinute: number
+  requestsPerDay: number
+  highlight?: boolean
+}
+
+export interface ApiWebhook {
+  id: string
+  event: string
+  url: string
+  status: 'activo' | 'pausado'
+  lastDelivery: string
+  successRate: number
+}
+
+export interface ApiUsagePoint {
+  label: string
+  requests: number
+  errors: number
+}
+
+export type ApiResourceKind = 'docs' | 'openapi' | 'changelog' | 'sdk' | 'status'
+
+export interface ApiResource {
+  id: string
+  title: string
+  description: string
+  kind: ApiResourceKind
+  href: string
+}
+
+export interface PublicApiSummary {
+  season: string
+  environment: ApiEnvironment
+  version: string
+  baseUrl: string
+  status: ApiServiceStatus
+  metrics: ApiMetric[]
+  endpointGroups: ApiEndpointGroup[]
+  codeSamples: ApiCodeSample[]
+  keys: ApiKeyItem[]
+  ratePlans: ApiRatePlan[]
+  webhooks: ApiWebhook[]
+  usage: ApiUsagePoint[]
+  resources: ApiResource[]
+}
+
+// ===== Alertas de elegibilidad =====
+
+export type EligibilitySeverity = 'critica' | 'advertencia' | 'info'
+
+export type EligibilityStatus = 'activa' | 'en-revision' | 'resuelta' | 'descartada'
+
+export type EligibilityTargetType = 'jugador' | 'cuerpo-tecnico' | 'club'
+
+export type EligibilityRuleCode =
+  | 'acumulacion-amarillas'
+  | 'roja-pendiente'
+  | 'licencia-vencida'
+  | 'minutos-promocion'
+  | 'fifa-connect'
+  | 'alineacion-indebida'
+  | 'fair-play'
+
+export type EligibilitySeverityTabId = 'todas' | EligibilitySeverity
+
+export interface EligibilityAlert {
+  id: string
+  code: string
+  rule: EligibilityRuleCode
+  severity: EligibilitySeverity
+  status: EligibilityStatus
+  targetType: EligibilityTargetType
+  subjectName: string
+  position?: PlayerPosition
+  role?: StaffRoleCode
+  club: Club
+  matchLabel?: string
+  deadline?: string
+  impact: string
+  headline: string
+  explanation: string
+  recommendation: string
+  actionLabel?: string
+  source?: string
+  detectedAt: string
+}
+
+export interface EligibilityFilters {
+  rule: string
+  club: string
+  status: string
+  search: string
+}
+
+export interface EligibilityFilterOptions {
+  rules: MatchFilterOption[]
+  clubs: MatchFilterOption[]
+  statuses: MatchFilterOption[]
+}
+
+export interface EligibilityCounts {
+  total: number
+  activas: number
+  criticas: number
+  advertencias: number
+  informativas: number
+  porVencer: number
+  resueltas: number
+}
+

@@ -1,6 +1,8 @@
 import type {
   AttendanceSummary,
   CalendarFixture,
+  EligibilityAlert,
+  EligibilityFilterOptions,
   HomeEvent,
   HomeStats,
   JornadaReport,
@@ -14,6 +16,7 @@ import type {
   Player,
   PlayerFilterOptions,
   PlayerFilters,
+  PublicApiSummary,
   Referee,
   RefereeFilterOptions,
   RefereeFilters,
@@ -41,10 +44,12 @@ import { buildJornadaReport } from './mocks/jornadaReport'
 import { buildRefereeReport } from './mocks/refereeReport'
 import { attendance } from './mocks/attendance'
 import { calendarFixtures } from './mocks/calendar'
+import { eligibilityAlerts, eligibilityFilterOptions } from './mocks/eligibilityAlerts'
 import { homeEvents, homeStats, nextMatch } from './mocks/home'
 import { matchFilterOptions, matches } from './mocks/matches'
 import { news } from './mocks/news'
 import { playerFilterOptions, players } from './mocks/players'
+import { publicApi } from './mocks/publicApi'
 import { recentResults } from './mocks/results'
 import { referees, refereeFilterOptions } from './mocks/referees'
 import { reportsCatalog } from './mocks/reports'
@@ -251,4 +256,19 @@ export async function getReports(season: string): Promise<ReportsCatalog> {
 export async function getJornadaReport(season: string): Promise<JornadaReport> {
   if (USE_MOCK) return delay(buildJornadaReport(season))
   return request<JornadaReport>('/reports/resumen-jornada', { season })
+}
+
+export async function getPublicApi(season: string): Promise<PublicApiSummary> {
+  if (USE_MOCK) return delay({ ...publicApi, season })
+  return request<PublicApiSummary>('/public-api', { season })
+}
+
+export async function getEligibilityAlerts(season: string): Promise<EligibilityAlert[]> {
+  if (USE_MOCK) return delay(eligibilityAlerts)
+  return request<EligibilityAlert[]>('/eligibility-alerts', { season })
+}
+
+export async function getEligibilityFilters(season: string): Promise<EligibilityFilterOptions> {
+  if (USE_MOCK) return delay(eligibilityFilterOptions)
+  return request<EligibilityFilterOptions>('/eligibility-alerts/filters', { season })
 }
