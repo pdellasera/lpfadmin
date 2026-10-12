@@ -17,6 +17,7 @@ import StadiumsPage from '@/pages/StadiumsPage'
 import TransparencyPage from '@/pages/TransparencyPage'
 import ReportsPage from '@/pages/ReportsPage'
 import JornadaReportPage from '@/pages/JornadaReportPage'
+import LpfFuturoPage from '@/pages/LpfFuturoPage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
 
 export const router = createBrowserRouter([
@@ -45,6 +46,7 @@ export const router = createBrowserRouter([
       { path: 'finanzas', element: <PlaceholderPage title="Finanzas" /> },
       { path: 'reportes', element: <ReportsPage /> },
       { path: 'reportes/resumen-jornada', element: <JornadaReportPage /> },
+      { path: 'lpf-futuro', element: <LpfFuturoPage /> },
       { path: 'transparencia', element: <TransparencyPage /> },
       { path: 'apis', element: <PublicApiPage /> },
       { path: 'auditoria', element: <PlaceholderPage title="Auditoría" /> },

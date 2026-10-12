@@ -8,6 +8,8 @@ export const clubs: Club[] = [
   { id: 'tauro', name: 'Tauro FC', shortName: 'TAU', primaryColor: '#111827', secondaryColor: '#D4AF37', crestUrl: '/images/crests/tauro.png', fullName: 'Tauro Fútbol Club' },
   { id: 'universitario', name: 'CD Universitario', shortName: 'CDU', primaryColor: '#005BAC', secondaryColor: '#F8FAFC', crestUrl: '/images/crests/CDU.png', fullName: 'Club Deportivo Universitario' },
   { id: 'veraguas', name: 'Veraguas United', shortName: 'VER', primaryColor: '#D71E28', secondaryColor: '#FFD100', crestUrl: '/images/crests/VeraguasUD.png', fullName: 'Veraguas United FC' },
+  { id: 'cai', name: 'CAI', shortName: 'CAI', primaryColor: '#1e3a8a', secondaryColor: '#fbbf24', crestUrl: '/images/crests/cai.png', fullName: 'Club Atlético Independiente' },
+  { id: 'plaza-amador', name: 'Plaza Amador', shortName: 'PLA', primaryColor: '#1d4ed8', secondaryColor: '#f8fafc', crestUrl: '/images/crests/plaza-amador.png', fullName: 'Club Deportivo Plaza Amador' },
 ]
 
 export function clubById(id: string): Club {

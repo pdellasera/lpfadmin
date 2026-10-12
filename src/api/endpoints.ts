@@ -6,6 +6,9 @@ import type {
   HomeEvent,
   HomeStats,
   JornadaReport,
+  LpfFuturoFilterOptions,
+  LpfFuturoSummary,
+  LpfVacanteFilterOptions,
   MatchFilterOptions,
   MatchFilters,
   MatchActa,
@@ -46,6 +49,7 @@ import { attendance } from './mocks/attendance'
 import { calendarFixtures } from './mocks/calendar'
 import { eligibilityAlerts, eligibilityFilterOptions } from './mocks/eligibilityAlerts'
 import { homeEvents, homeStats, nextMatch } from './mocks/home'
+import { lpfFuturo, lpfFuturoFilterOptions, lpfVacanteFilterOptions } from './mocks/lpfFuturo'
 import { matchFilterOptions, matches } from './mocks/matches'
 import { news } from './mocks/news'
 import { playerFilterOptions, players } from './mocks/players'
@@ -271,4 +275,19 @@ export async function getEligibilityAlerts(season: string): Promise<EligibilityA
 export async function getEligibilityFilters(season: string): Promise<EligibilityFilterOptions> {
   if (USE_MOCK) return delay(eligibilityFilterOptions)
   return request<EligibilityFilterOptions>('/eligibility-alerts/filters', { season })
+}
+
+export async function getLpfFuturo(season: string): Promise<LpfFuturoSummary> {
+  if (USE_MOCK) return delay({ ...lpfFuturo, season })
+  return request<LpfFuturoSummary>('/lpf-futuro', { season })
+}
+
+export async function getLpfFuturoFilters(season: string): Promise<LpfFuturoFilterOptions> {
+  if (USE_MOCK) return delay(lpfFuturoFilterOptions)
+  return request<LpfFuturoFilterOptions>('/lpf-futuro/filters', { season })
+}
+
+export async function getLpfVacanteFilters(season: string): Promise<LpfVacanteFilterOptions> {
+  if (USE_MOCK) return delay(lpfVacanteFilterOptions)
+  return request<LpfVacanteFilterOptions>('/lpf-futuro/vacantes/filters', { season })
 }

@@ -9,6 +9,7 @@ import {
   FaDisplay,
   FaFileSignature,
   FaPlug,
+  FaRocket,
   FaShieldHalved,
   FaTableCells,
   FaTriangleExclamation,
@@ -64,6 +65,7 @@ const navGroups: NavGroup[] = [
     label: 'Datos',
     items: [
       { label: 'Reportes', to: '/panel/reportes', icon: FaChartLine },
+      { label: 'LPF Futuro', to: '/panel/lpf-futuro', icon: FaRocket },
       { label: 'Transparencia', to: '/panel/transparencia', icon: FaDisplay },
       { label: 'API pública', to: '/panel/apis', icon: FaPlug },
       { label: 'Auditoría', to: '/panel/auditoria', icon: FaClockRotateLeft },

@@ -1007,3 +1007,140 @@ export interface EligibilityCounts {
   resueltas: number
 }
 
+// ===== LPF Futuro =====
+
+export type LpfFuturoTabId =
+  | 'vacantes'
+  | 'resumen'
+  | 'postulados'
+  | 'universidades'
+  | 'equipos'
+
+export type LpfKpiTone = 'violet' | 'emerald' | 'brand' | 'indigo' | 'sky'
+
+export type LpfFuturoState =
+  | 'nuevo'
+  | 'en-revision'
+  | 'preseleccionado'
+  | 'aceptado'
+  | 'rechazado'
+
+export interface LpfFuturoDelta {
+  direction: DeltaDirection
+  tone: 'emerald' | 'rose' | 'brand' | 'sky'
+  label: string
+  caption?: string
+}
+
+export interface LpfFuturoKpi {
+  id: string
+  label: string
+  value: number
+  tone: LpfKpiTone
+  delta?: LpfFuturoDelta
+  caption?: string
+}
+
+export interface LpfUniversity {
+  id: string
+  name: string
+  shortName: string
+  color: string
+  logoUrl?: string
+}
+
+export interface LpfPostulante {
+  id: string
+  name: string
+  email: string
+  university: LpfUniversity
+  vacante: string
+  area: string
+  club: Club
+  date: string // ISO date (YYYY-MM-DD)
+  state: LpfFuturoState
+}
+
+export interface LpfRankingItem {
+  id: string
+  label: string
+  value: number
+  club?: Club
+  university?: LpfUniversity
+}
+
+export interface LpfVacante {
+  id: string
+  role: string
+  area: string
+  modality: string
+  club: Club
+  postedLabel: string
+  type?: string
+  university?: LpfUniversity
+  applicants?: number
+  postedDaysAgo?: number
+  durationLabel?: string
+  deadline?: string // ISO date (YYYY-MM-DD)
+  description?: string
+  requirements?: string[]
+  responsibilities?: string[]
+  eligibleUniversities?: LpfUniversity[]
+  bookmarked?: boolean
+}
+
+export interface LpfUniversityStat {
+  university: LpfUniversity
+  count: number
+}
+
+export interface LpfAreaDemand {
+  id: string
+  label: string
+  percent: number
+}
+
+export interface LpfFuturoFilters {
+  estado: string
+  universidad: string
+  club: string
+  area: string
+  search: string
+}
+
+export interface LpfFuturoFilterOptions {
+  estados: MatchFilterOption[]
+  universidades: MatchFilterOption[]
+  clubes: MatchFilterOption[]
+  areas: MatchFilterOption[]
+}
+
+export interface LpfVacanteFilters {
+  search: string
+  area: string
+  club: string
+  modalidad: string
+  tipo: string
+}
+
+export interface LpfVacanteFilterOptions {
+  areas: MatchFilterOption[]
+  clubes: MatchFilterOption[]
+  modalidades: MatchFilterOption[]
+  tipos: MatchFilterOption[]
+}
+
+export interface LpfFuturoSummary {
+  season: string
+  kpis: LpfFuturoKpi[]
+  postulados: LpfPostulante[]
+  postuladosPorClub: LpfRankingItem[]
+  postuladosPorUniversidad: LpfRankingItem[]
+  vacantesDestacadas: LpfVacante[]
+  vacantes: LpfVacante[]
+  vacantesTotal: number
+  universidadesActivas: LpfUniversityStat[]
+  universidadesTotales: number
+  areasMasSolicitadas: LpfAreaDemand[]
+}
+
