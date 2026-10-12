@@ -20,7 +20,18 @@
       "headers": { "Cache-Control": "public, max-age=604800" },
       "continue": true
     },
+    {
+      "src": "/",
+      "headers": { "Cache-Control": "no-store, must-revalidate" },
+      "continue": true
+    },
+    {
+      "src": "/index.html",
+      "headers": { "Cache-Control": "no-store, must-revalidate" },
+      "continue": true
+    },
     { "handle": "filesystem" },
+    { "src": "/assets/(.*)", "status": 404 },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
