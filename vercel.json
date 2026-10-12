@@ -1,37 +1,61 @@
+
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "vite",
   "installCommand": "npm ci",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "routes": [
+  "headers": [
     {
-      "src": "/assets/(.*)",
-      "headers": { "Cache-Control": "public, max-age=31536000, immutable" },
-      "continue": true
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     },
     {
-      "src": "/images/(.*)",
-      "headers": { "Cache-Control": "public, max-age=604800" },
-      "continue": true
+      "source": "/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
+      ]
     },
     {
-      "src": "/reports/(.*)",
-      "headers": { "Cache-Control": "public, max-age=604800" },
-      "continue": true
+      "source": "/reports/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
+      ]
     },
     {
-      "src": "/",
-      "headers": { "Cache-Control": "no-store, must-revalidate" },
-      "continue": true
+      "source": "/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, must-revalidate"
+        }
+      ]
     },
     {
-      "src": "/index.html",
-      "headers": { "Cache-Control": "no-store, must-revalidate" },
-      "continue": true
-    },
-    { "handle": "filesystem" },
-    { "src": "/assets/(.*)", "status": 404 },
-    { "src": "/(.*)", "dest": "/index.html" }
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/((?!assets/).*)",
+      "destination": "/index.html"
+    }
   ]
 }
