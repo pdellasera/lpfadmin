@@ -4,15 +4,17 @@ import { LpfFuturoHero } from '@/components/lpf-futuro/LpfFuturoHero'
 import { LpfFuturoKpiRow } from '@/components/lpf-futuro/LpfFuturoKpiRow'
 import { LpfFuturoSkeleton } from '@/components/lpf-futuro/LpfFuturoSkeleton'
 import { LpfFuturoToolbar } from '@/components/lpf-futuro/LpfFuturoToolbar'
+import { PostuladosPanel } from '@/components/lpf-futuro/postulados/PostuladosPanel'
 import { PostuladosRankingCard } from '@/components/lpf-futuro/PostuladosRankingCard'
 import { PostuladosRecientesCard } from '@/components/lpf-futuro/PostuladosRecientesCard'
 import { UniversidadesActivasCard } from '@/components/lpf-futuro/UniversidadesActivasCard'
 import { VacantesDestacadasCard } from '@/components/lpf-futuro/VacantesDestacadasCard'
+import { UniversidadesPanel } from '@/components/lpf-futuro/universidades/UniversidadesPanel'
 import { VacantesPanel } from '@/components/lpf-futuro/vacantes/VacantesPanel'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { ErrorState } from '@/components/ui/ErrorState'
 import { Skeleton } from '@/components/ui/Skeleton'
-import { useLpfFuturo, useLpfFuturoFilters, useLpfVacanteFilters } from '@/hooks/useLpfFuturoQueries'
+import { useLpfFuturo, useLpfFuturoFilters, useLpfVacanteFilters, usePostuladosFilterOptions, useUniversidadesFilterOptions } from '@/hooks/useLpfFuturoQueries'
 import PlaceholderPage from '@/pages/PlaceholderPage'
 import type { LpfFuturoFilters, LpfFuturoTabId } from '@/types'
 
@@ -24,9 +26,8 @@ const EMPTY_FILTERS: LpfFuturoFilters = {
   search: '',
 }
 
-const TAB_TITLES: Record<Exclude<LpfFuturoTabId, 'vacantes' | 'resumen'>, string> = {
+const TAB_TITLES: Record<Exclude<LpfFuturoTabId, 'vacantes' | 'resumen' | 'universidades'>, string> = {
   postulados: 'Postulados',
-  universidades: 'Universidades',
   equipos: 'Equipos',
 }
 
@@ -37,6 +38,16 @@ export default function LpfFuturoPage() {
   const { data, isLoading, isError, refetch } = useLpfFuturo()
   const { data: options, isLoading: optionsLoading } = useLpfFuturoFilters()
   const { data: vacanteOptions, isLoading: vacanteOptionsLoading } = useLpfVacanteFilters()
+  const { data: postuladosOptions, isLoading: postuladosOptionsLoading } = usePostuladosFilterOptions()
+  const { data: universidadesOptions, isLoading: universidadesOptionsLoading } = useUniversidadesFilterOptions()
+
+  const heroTitle = tab === 'postulados' ? 'Postulados' : tab === 'universidades' ? 'Universidades' : 'LPF Futuro'
+  const heroSubtitle =
+    tab === 'postulados'
+      ? 'Gestiona y evalúa las postulaciones de los universitarios'
+      : tab === 'universidades'
+        ? 'Instituciones aliadas en la formación de talento para el fútbol panameño.'
+        : 'Conectando talento universitario con el fútbol panameño'
 
   const filtered = useMemo(() => {
     if (!data) return []
@@ -55,7 +66,7 @@ export default function LpfFuturoPage() {
 
   return (
     <div className="space-y-3">
-      <LpfFuturoHero tab={tab} onTabChange={setTab} />
+      <LpfFuturoHero tab={tab} onTabChange={setTab} title={heroTitle} subtitle={heroSubtitle} />
 
       {tab === 'vacantes' ? (
         isError ? (
@@ -66,6 +77,32 @@ export default function LpfFuturoPage() {
           <Skeleton className="h-[70px] w-full rounded-card" />
         ) : (
           <VacantesPanel vacantes={data.vacantes} total={data.vacantesTotal} options={vacanteOptions} />
+        )
+      ) : tab === 'postulados' ? (
+        isError ? (
+          <ErrorState message="No se pudieron cargar los datos de LPF Futuro." onRetry={() => refetch()} />
+        ) : isLoading || !data ? (
+          <LpfFuturoSkeleton />
+        ) : postuladosOptionsLoading || !postuladosOptions ? (
+          <Skeleton className="h-[70px] w-full rounded-card" />
+        ) : (
+          <PostuladosPanel postulados={data.postulados} kpis={data.postuladosKpis} options={postuladosOptions} />
+        )
+      ) : tab === 'universidades' ? (
+        isError ? (
+          <ErrorState message="No se pudieron cargar los datos de LPF Futuro." onRetry={() => refetch()} />
+        ) : isLoading || !data ? (
+          <LpfFuturoSkeleton />
+        ) : universidadesOptionsLoading || !universidadesOptions ? (
+          <Skeleton className="h-[70px] w-full rounded-card" />
+        ) : (
+          <UniversidadesPanel
+            universities={data.universidades}
+            kpis={data.universidadesKpis}
+            options={universidadesOptions}
+            vacantes={data.vacantes}
+            postulantes={data.postulados}
+          />
         )
       ) : tab !== 'resumen' ? (
         <PlaceholderPage title={TAB_TITLES[tab]} />

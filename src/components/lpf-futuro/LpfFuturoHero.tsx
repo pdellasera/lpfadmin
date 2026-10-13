@@ -15,9 +15,16 @@ const TABS: PillTabOption<LpfFuturoTabId>[] = [
 interface LpfFuturoHeroProps {
   tab: LpfFuturoTabId
   onTabChange: (tab: LpfFuturoTabId) => void
+  title?: string
+  subtitle?: string
 }
 
-export function LpfFuturoHero({ tab, onTabChange }: LpfFuturoHeroProps) {
+export function LpfFuturoHero({
+  tab,
+  onTabChange,
+  title = 'LPF Futuro',
+  subtitle = 'Conectando talento universitario con el fútbol panameño',
+}: LpfFuturoHeroProps) {
   return (
     <motion.section
       variants={stagger(0.08)}
@@ -45,10 +52,10 @@ export function LpfFuturoHero({ tab, onTabChange }: LpfFuturoHeroProps) {
               variants={fadeUp}
               className="font-display text-4xl leading-[0.95] text-content-primary dark:text-white sm:text-5xl xl:text-[3.5rem]"
             >
-              LPF Futuro
+              {title}
             </motion.h1>
             <motion.p variants={fadeUp} className="mt-2 max-w-xl text-sm text-content-secondary sm:text-base">
-              Conectando talento universitario con el fútbol panameño
+              {subtitle}
             </motion.p>
           </div>
 

@@ -8,6 +8,8 @@ import type {
   JornadaReport,
   LpfFuturoFilterOptions,
   LpfFuturoSummary,
+  LpfPostuladosFilterOptions,
+  LpfUniversidadesFilterOptions,
   LpfVacanteFilterOptions,
   MatchFilterOptions,
   MatchFilters,
@@ -49,7 +51,7 @@ import { attendance } from './mocks/attendance'
 import { calendarFixtures } from './mocks/calendar'
 import { eligibilityAlerts, eligibilityFilterOptions } from './mocks/eligibilityAlerts'
 import { homeEvents, homeStats, nextMatch } from './mocks/home'
-import { lpfFuturo, lpfFuturoFilterOptions, lpfVacanteFilterOptions } from './mocks/lpfFuturo'
+import { lpfFuturo, lpfFuturoFilterOptions, lpfVacanteFilterOptions, postuladosFilterOptions, universidadesFilterOptions } from './mocks/lpfFuturo'
 import { matchFilterOptions, matches } from './mocks/matches'
 import { news } from './mocks/news'
 import { playerFilterOptions, players } from './mocks/players'
@@ -290,4 +292,14 @@ export async function getLpfFuturoFilters(season: string): Promise<LpfFuturoFilt
 export async function getLpfVacanteFilters(season: string): Promise<LpfVacanteFilterOptions> {
   if (USE_MOCK) return delay(lpfVacanteFilterOptions)
   return request<LpfVacanteFilterOptions>('/lpf-futuro/vacantes/filters', { season })
+}
+
+export async function getPostuladosFilterOptions(season: string): Promise<LpfPostuladosFilterOptions> {
+  if (USE_MOCK) return delay(postuladosFilterOptions)
+  return request<LpfPostuladosFilterOptions>('/lpf-futuro/postulados/filters', { season })
+}
+
+export async function getUniversidadesFilterOptions(season: string): Promise<LpfUniversidadesFilterOptions> {
+  if (USE_MOCK) return delay(universidadesFilterOptions)
+  return request<LpfUniversidadesFilterOptions>('/lpf-futuro/universidades/filters', { season })
 }

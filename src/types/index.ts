@@ -1041,24 +1041,129 @@ export interface LpfFuturoKpi {
   caption?: string
 }
 
+export type LpfUniversidadEstado = 'activa' | 'inactiva' | 'en-convenio'
+
+export type LpfUniversidadTipo = 'Pública' | 'Privada' | 'Internacional'
+
+export interface LpfUniversidadContacto {
+  name: string
+  role: string
+  email: string
+  phone: string
+}
+
+export interface LpfUniversidadVacanteResumen {
+  id: string
+  role: string
+  area: string
+  postedLabel: string
+  postulados: number
+}
+
+export interface LpfUniversidadReview {
+  id: string
+  author: string
+  role?: string
+  rating: number
+  date: string // ISO date (YYYY-MM-DD)
+  comment: string
+}
+
+export interface LpfUniversidadEstudiante {
+  id: string
+  name: string
+  email: string
+  career: string
+  semester: string
+  avatarColor?: string
+}
+
 export interface LpfUniversity {
   id: string
   name: string
   shortName: string
   color: string
   logoUrl?: string
+  estado?: LpfUniversidadEstado
+  tipo?: LpfUniversidadTipo
+  ciudad?: string
+  website?: string
+  description?: string
+  estudiantes?: number
+  vacantes?: number
+  postulados?: number
+  rating?: number
+  reviewsCount?: number
+  areas?: string[]
+  contacto?: LpfUniversidadContacto
+  partnerSince?: string // ISO date (YYYY-MM-DD)
+  vacantesRecientes?: LpfUniversidadVacanteResumen[]
+  estudiantesDestacados?: LpfUniversidadEstudiante[]
+  reviews?: LpfUniversidadReview[]
+}
+
+export type LpfPostulanteTipo = 'Pasantía' | 'Práctica profesional' | 'Voluntariado' | 'Empleo'
+
+export type LpfPostulanteDocumentKind = 'cv' | 'carta' | 'transcripto' | 'portafolio' | 'otro'
+
+export interface LpfPostulanteDocument {
+  id: string
+  name: string
+  kind: LpfPostulanteDocumentKind
+  size?: string
+  uploadedAt?: string // ISO date (YYYY-MM-DD)
+  verified?: boolean
+}
+
+export type LpfInterviewMode = 'virtual' | 'presencial'
+
+export type LpfInterviewStatus = 'pendiente' | 'confirmada' | 'completada'
+
+export interface LpfPostulanteInterview {
+  id: string
+  date: string // ISO date (YYYY-MM-DD)
+  time: string
+  mode: LpfInterviewMode
+  interviewer?: string
+  status: LpfInterviewStatus
+  notes?: string
+}
+
+export type LpfHistoryTone = 'neutral' | 'success' | 'danger'
+
+export interface LpfPostulanteEvent {
+  id: string
+  date: string // ISO date (YYYY-MM-DD)
+  title: string
+  description?: string
+  author?: string
+  tone: LpfHistoryTone
 }
 
 export interface LpfPostulante {
   id: string
   name: string
   email: string
+  phone?: string
+  avatarColor?: string
+  type: LpfPostulanteTipo
   university: LpfUniversity
+  career: string
+  semester?: string
+  gpa?: string
+  location?: string
+  birthDate?: string // ISO date (YYYY-MM-DD)
+  availability?: string
   vacante: string
   area: string
   club: Club
   date: string // ISO date (YYYY-MM-DD)
   state: LpfFuturoState
+  coverLetter?: string
+  skills?: string[]
+  documents?: LpfPostulanteDocument[]
+  interviews?: LpfPostulanteInterview[]
+  history?: LpfPostulanteEvent[]
 }
 
 export interface LpfRankingItem {
@@ -1115,6 +1220,21 @@ export interface LpfFuturoFilterOptions {
   areas: MatchFilterOption[]
 }
 
+export interface LpfPostuladosFilters {
+  search: string
+  vacante: string
+  universidad: string
+  club: string
+  estado: string
+}
+
+export interface LpfPostuladosFilterOptions {
+  vacantes: MatchFilterOption[]
+  universidades: MatchFilterOption[]
+  clubes: MatchFilterOption[]
+  estados: MatchFilterOption[]
+}
+
 export interface LpfVacanteFilters {
   search: string
   area: string
@@ -1130,9 +1250,23 @@ export interface LpfVacanteFilterOptions {
   tipos: MatchFilterOption[]
 }
 
+export interface LpfUniversidadesFilters {
+  search: string
+  ciudad: string
+  tipo: string
+  estado: string
+}
+
+export interface LpfUniversidadesFilterOptions {
+  ciudades: MatchFilterOption[]
+  tipos: MatchFilterOption[]
+  estados: MatchFilterOption[]
+}
+
 export interface LpfFuturoSummary {
   season: string
   kpis: LpfFuturoKpi[]
+  postuladosKpis: LpfFuturoKpi[]
   postulados: LpfPostulante[]
   postuladosPorClub: LpfRankingItem[]
   postuladosPorUniversidad: LpfRankingItem[]
@@ -1140,6 +1274,8 @@ export interface LpfFuturoSummary {
   vacantes: LpfVacante[]
   vacantesTotal: number
   universidadesActivas: LpfUniversityStat[]
+  universidades: LpfUniversity[]
+  universidadesKpis: LpfFuturoKpi[]
   universidadesTotales: number
   areasMasSolicitadas: LpfAreaDemand[]
 }
